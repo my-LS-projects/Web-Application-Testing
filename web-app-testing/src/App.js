@@ -17,7 +17,7 @@ class App extends React.Component {
   constructor() {
     super()
     this.state = {
-      strikes: 2,
+      strikes: 0,
       balls: 0,
       fouls: 0,
     }
@@ -31,14 +31,15 @@ class App extends React.Component {
     console.log("HIT")
     this.setState({
       balls: 0,
-      strikes: 0
+      strikes: 0,
+      fouls: 0
     })
   }
 
   addBall = () =>{
     console.log("BALL")
     ++this.state.balls >= 4 
-    ? this.setState({ balls: 0, strikes: 0}) 
+    ? this.setState({ balls: 0, strikes: 0, fouls: 0}) 
     : this.setState({ balls: this.state.balls++})
   }
 
