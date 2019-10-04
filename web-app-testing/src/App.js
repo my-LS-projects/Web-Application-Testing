@@ -9,39 +9,53 @@ import { Display } from "./components/Display"
 
 
 // count rules
-// balls and strikes reset to 0 when player reaches 3 strikes or 4 balls
-// balls and strikes reset to 0 when hit is recorded
-// foul increases strikes up to 2. with no strikes, a foul makes it 1 strike. with 1 strike, a foul makes it 2 strikes. with two strikes a foul has no effect, count stays at 2 strikes. (if strikes < 2, strikes++) 
+
+
 
 
 class App extends React.Component {
   constructor() {
     super()
     this.state = {
-      strikes: 0,
+      strikes: 2,
       balls: 0,
+      fouls: 0,
     }
   }
 
   /**** methods ****/
-  hit(){
+
+  hit = () => {
+    // balls and strikes reset to 0 when hit is recorded
+    // balls and strikes reset to 0 when player reaches 3 strikes or 4 balls
     console.log("HIT")
     this.setState({
-      strikes: 0,
       balls: 0,
+      strikes: 0
     })
   }
 
-  addBall(){
+  addBall = () =>{
     console.log("BALL")
+    ++this.state.balls >= 4 
+    ? this.setState({ balls: 0, strikes: 0}) 
+    : this.setState({ balls: this.state.balls++})
   }
 
-  addStrike(){
+  addStrike = () => {
+    // balls and strikes reset to 0 when player reaches 3 strikes or 4 balls
     console.log("STRIKE")
+    this.setState({
+      strikes: ((++this.state.strikes >= 3 ? 0 : this.state.strikes++))
+    })
   }
 
-  addFoul(){
+  addFoul = () => {
+    // foul increases strikes up to 2. with no strikes, a foul makes it 1 strike. with 1 strike, a foul makes it 2 strikes. with two strikes a foul has no effect, count stays at 2 strikes. (if strikes < 2, strikes++) 
     console.log("FOUL")
+    this.state.strikes >= 2 
+    ? this.setState({ fouls: (this.state.fouls)+1, strikes: this.state.strikes})
+    : this.setState({ fouls: (this.state.fouls)+1, strikes: (this.state.strikes)+1})
   }
   /** end methods **/
 
@@ -51,7 +65,7 @@ class App extends React.Component {
       <div className="App">
         <h1>Baseball React App</h1>
         <Display {...this.state}/>
-        <Dashboard hit={this.hit()} ball={this.addBall()} />
+        <Dashboard hit={this.hit} ball={this.addBall} strike={this.addStrike} foul={this.addFoul}/>
       </div>
     );
 
